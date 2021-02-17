@@ -1,0 +1,20 @@
+package com.example.facturas.local_models;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class MedioPago {
+
+    private Long id;
+    private int descuento;
+
+    private String nombre;
+}
