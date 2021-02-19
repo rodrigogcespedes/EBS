@@ -11,7 +11,15 @@ import com.microservicioStock.microservicioStock.services.InsumoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -56,7 +64,7 @@ public class InsumoController extends BaseControllerImpl<DTOInsumo,Insumo, Insum
             for (DTOArticulos_Existencia a : dto.getArticulos_existencias())
                 a.setDtoExistencia(gson.fromJson(provClient.getOneExistencia(a.getId_existencia()).getBody().toString(), DTOExistencia.class));
 
-            dto = new DTOInsumo(service.save(dto.parseEntity()));
+            dto.setGeneratedValues(new DTOInsumo(service.save(dto.parseEntity())));
 
             return ResponseEntity.status(HttpStatus.OK).body(dto);
         } catch (Exception e) {
@@ -76,7 +84,7 @@ public class InsumoController extends BaseControllerImpl<DTOInsumo,Insumo, Insum
                 a.setDtoExistencia(gson.fromJson(provClient.getOneExistencia(a.getId_existencia()).getBody().toString(), DTOExistencia.class));
             }
 
-            dto=new DTOInsumo(service.update(id, dto.parseEntity()));
+            dto.setGeneratedValues(new DTOInsumo(service.update(id, dto.parseEntity())));
 
             return ResponseEntity.status(HttpStatus.OK).body(dto);
         } catch (Exception e) {
@@ -109,7 +117,7 @@ public class InsumoController extends BaseControllerImpl<DTOInsumo,Insumo, Insum
                 a.getDtoExistencia().setId(dtoExistencia.getId());
             }
 
-            dto = new DTOInsumo(service.save(dto.parseEntity()));
+            dto.setGeneratedValues(new DTOInsumo(service.save(dto.parseEntity())));
 
             return ResponseEntity.status(HttpStatus.OK).body(dto);
         } catch (Exception e) {
@@ -144,7 +152,7 @@ public class InsumoController extends BaseControllerImpl<DTOInsumo,Insumo, Insum
                 }else provClient.updateExistencia(a.getId_existencia(),a.getDtoExistencia());
             }
 
-            dto = new DTOInsumo(service.update(id, dto.parseEntity()));
+            dto.setGeneratedValues(new DTOInsumo(service.update(id, dto.parseEntity())));
 
             return ResponseEntity.status(HttpStatus.OK).body(dto);
         } catch (Exception e) {
@@ -152,8 +160,6 @@ public class InsumoController extends BaseControllerImpl<DTOInsumo,Insumo, Insum
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error\"}");
         }
     }
-
-
 
     @DeleteMapping("/subordinada/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
