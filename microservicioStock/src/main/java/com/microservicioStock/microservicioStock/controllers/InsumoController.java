@@ -38,6 +38,8 @@ public class InsumoController extends BaseControllerImpl<DTOInsumo,Insumo, Insum
             //Insumo i = service.findById(id);
             DTOInsumo dto = new DTOInsumo(service.findById(id));
 
+            System.out.println(provClient.getOneProveedor(dto.getIdDistribProv()).getBody().toString());
+
 //            para XtoOne
             DTOProveedor prov = gson.fromJson(provClient.getOneProveedor(dto.getIdDistribProv()).getBody().toString(), DTOProveedor.class);
             dto.setProveedor(prov);
