@@ -1,5 +1,6 @@
 package com.microservicioStock.microservicioStock.DTO;
 
+import com.microservicioStock.microservicioStock.local_models.stock.Articulo;
 import com.microservicioStock.microservicioStock.local_models.stock.Manufacturado;
 import com.microservicioStock.microservicioStock.local_models.stock.Receta;
 import lombok.AllArgsConstructor;
@@ -48,5 +49,16 @@ public class DTOManufacturado extends DTOArticulo {
             entity.getPrecio().add(dto.parseEntity());
 
         return entity;
+    }
+
+    @Override
+    public BaseDTO<Articulo> setGeneratedValues(BaseDTO<Articulo> dtoIn) {
+
+        super.setGeneratedValues(dtoIn);
+
+        for(int i=0; i<this.recetas.size(); i++)
+            this.recetas.get(i).setGeneratedValues(((DTOManufacturado) dtoIn).getRecetas().get(i));
+
+        return this;
     }
 }

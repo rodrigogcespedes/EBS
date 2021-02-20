@@ -36,4 +36,11 @@ public class DTOHistoricoPrecios extends BaseDTO<HistoricoPrecios>{
         entity.setId(this.id);
         return entity;
     }
+
+    @Override
+    public BaseDTO<HistoricoPrecios> setGeneratedValues(BaseDTO<HistoricoPrecios> dtoIn) {
+
+        this.id = dtoIn.getId();
+        return this;
+    }
 }

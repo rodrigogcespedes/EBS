@@ -29,7 +29,7 @@ public abstract class DTOArticulo extends BaseDTO<Articulo> {
 
     protected List<DTOHistoricoPrecios> precio = new ArrayList<DTOHistoricoPrecios>();
 
-    protected List<DTOArticulos_Existencia> articulos_existencias = new ArrayList<>();
+    protected List<DTOArticulos_Existencia> articulos_existencias = new ArrayList<DTOArticulos_Existencia>();
 
     public DTOArticulo(Articulo entity) {
 
@@ -55,5 +55,18 @@ public abstract class DTOArticulo extends BaseDTO<Articulo> {
         for (Articulos_Existencia i : entity.getArticulos_existencias())
             this.articulos_existencias.add(new DTOArticulos_Existencia(i));
 
+    }
+
+    @Override
+    public BaseDTO<Articulo> setGeneratedValues(BaseDTO<Articulo> dtoIn) {
+
+        for(int i=0; i<this.precio.size(); i++)
+            this.precio.get(i).setGeneratedValues(((DTOArticulo) dtoIn).getPrecio().get(i));
+
+        for(int i=0; i<this.articulos_existencias.size(); i++)
+            this.articulos_existencias.get(i).setGeneratedValues(((DTOArticulo) dtoIn).getArticulos_existencias().get(i));
+
+        this.id = dtoIn.getId();
+        return this;
     }
 }

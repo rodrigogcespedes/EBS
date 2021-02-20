@@ -17,7 +17,7 @@ public class ProveedorHystrixFallbackFactory implements ProveedorClientRest{
                 .razonSocial("notFound")
                 .build();
         System.out.println("paso");
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
 //        return ResponseEntity.status(HttpStatus.OK).body("{\"id\":1,\"razonSocial\":\"prov1\",\"contacto\":\"prov1\"}");
     }
 

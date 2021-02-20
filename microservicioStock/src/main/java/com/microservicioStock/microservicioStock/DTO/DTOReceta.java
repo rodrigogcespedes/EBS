@@ -57,4 +57,14 @@ public class DTOReceta extends BaseDTO<Receta> {
         entity.setId(this.id);
         return entity;
     }
+
+    @Override
+    public BaseDTO<Receta> setGeneratedValues(BaseDTO<Receta> dtoIn) {
+
+        for(int i=0; i<this.ingredientes.size(); i++)
+            this.ingredientes.get(i).setGeneratedValues(((DTOReceta) dtoIn).getIngredientes().get(i));
+
+        this.id = dtoIn.getId();
+        return this;
+    }
 }

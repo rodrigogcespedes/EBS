@@ -1,5 +1,6 @@
 package com.microservicioStock.microservicioStock.DTO;
 
+import com.microservicioStock.microservicioStock.local_models.stock.Articulo;
 import com.microservicioStock.microservicioStock.local_models.stock.Insumo;
 import com.microservicioStock.microservicioStock.remote_models.DTOProveedor;
 import lombok.AllArgsConstructor;
@@ -46,5 +47,13 @@ public class DTOInsumo extends DTOArticulo{
 
         //Siempre
         return entity;
+    }
+
+    @Override
+    public BaseDTO<Articulo> setGeneratedValues(BaseDTO<Articulo> dtoIn) {
+        //siempre que herede, el id va en la clase padre
+        super.setGeneratedValues(dtoIn);
+
+        return this;
     }
 }

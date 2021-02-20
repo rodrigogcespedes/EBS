@@ -2,7 +2,6 @@ package com.microservicioStock.microservicioStock.DTO;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.microservicioStock.microservicioStock.local_models.stock.Articulo;
 import com.microservicioStock.microservicioStock.local_models.stock.Insumo;
 import com.microservicioStock.microservicioStock.local_models.stock.Manufacturado;
@@ -54,5 +53,18 @@ public class DTORubro extends BaseDTO<Rubro>{
 
         entity.setId(this.id);
         return entity;
+    }
+
+    @Override
+    public BaseDTO<Rubro> setGeneratedValues(BaseDTO<Rubro> dtoIn) {
+
+        for(int i=0; i<this.pertenece.size(); i++)
+            this.pertenece.get(i).setGeneratedValues(((DTORubro) dtoIn).getPertenece().get(i));
+
+        for(int i=0; i<this.articulos.size(); i++)
+            this.articulos.get(i).setGeneratedValues(((DTORubro) dtoIn).getArticulos().get(i));
+
+        this.id = dtoIn.getId();
+        return this;
     }
 }

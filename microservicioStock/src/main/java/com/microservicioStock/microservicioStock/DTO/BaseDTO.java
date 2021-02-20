@@ -14,4 +14,6 @@ public abstract class BaseDTO<E extends Base> {
 
     public abstract E parseEntity();
 
+    public abstract BaseDTO<E> setGeneratedValues(BaseDTO<E> dtoIn);
+
 }

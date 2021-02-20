@@ -34,6 +34,10 @@ public abstract class BaseControllerImpl<E extends Base, S extends BaseServiceIm
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable Long id) {
+//
+//        if(true)
+//        throw new Exception();
+
         try{
             return ResponseEntity.status(HttpStatus.OK).body(service.findById(id));
         }catch (Exception e){
