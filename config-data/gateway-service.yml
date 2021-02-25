@@ -1,14 +1,20 @@
 server:
   port: 8080
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+
+#Si se usa Eureka
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka/
 
 spring:
   application:
     name: gateway-service
   cloud:
+    #Si se usa consul
+    consul:
+      host: 127.0.0.1
+      port: 8500
     gateway:
       discovery:
         locator:
@@ -22,7 +28,7 @@ spring:
         - id: microStock
           uri: lb://microStock
           predicates:
-#            - Path=/api/v1/insumo/**, /api/v1/manufacturado/**, /api/v1/rubro/**
+            #            - Path=/api/v1/insumo/**, /api/v1/manufacturado/**, /api/v1/rubro/**
             - Path=/microStock/**
         - id: comanda-service
           uri: lb://comanda-service
