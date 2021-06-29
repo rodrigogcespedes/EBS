@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(path = "microStock/api/v1/insumo")
@@ -31,6 +34,14 @@ public class InsumoController extends BaseControllerImpl<DTOInsumo,Insumo, Insum
 
     private Gson gson = new Gson();
 
+//    Generico
+//    public List xtoMany(List<Long> ids, ResponseEntity entity, Class dtoClass){
+//        List dtos = new ArrayList();
+//        for(Long a : ids)
+//            dtos.add(gson.fromJson(entity.getBody().toString(), dtoClass));
+//        return dtos;
+//    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable Long id) {
         try {
@@ -38,15 +49,22 @@ public class InsumoController extends BaseControllerImpl<DTOInsumo,Insumo, Insum
             //Insumo i = service.findById(id);
             DTOInsumo dto = new DTOInsumo(service.findById(id));
 
-            System.out.println(provClient.getOneProveedor(dto.getIdDistribProv()).getBody().toString());
-
-//            para XtoOne
+            //para XtoOne
             DTOProveedor prov = gson.fromJson(provClient.getOneProveedor(dto.getIdDistribProv()).getBody().toString(), DTOProveedor.class);
             dto.setProveedor(prov);
 
             //para XtoMany
+            for(Long a : dto.getIdDistribExistencias())
+                dto.getDtoExistencias().add(gson.fromJson(provClient.getOneExistencia(a).getBody().toString(), DTOExistencia.class));
+
+            //Generico
+            //dto.setDtoExistencias(xtoMany(dto.getIdDistribExistencias(), ));
+            //Try Functional
+
+            /*Deprecated
             for (DTOArticulos_Existencia a : dto.getArticulos_existencias())
                 a.setDtoExistencia(gson.fromJson(provClient.getOneExistencia(a.getId_existencia()).getBody().toString(), DTOExistencia.class));
+             */
 
             return ResponseEntity.status(HttpStatus.OK).body(dto);
         } catch (Exception e) {
@@ -62,9 +80,14 @@ public class InsumoController extends BaseControllerImpl<DTOInsumo,Insumo, Insum
             DTOProveedor prov = gson.fromJson(provClient.getOneProveedor(dto.getIdDistribProv()).getBody().toString(), DTOProveedor.class);
             dto.setProveedor(prov);
 
-            // para XtoMany
+            //para XtoMany
+            for(Long a : dto.getIdDistribExistencias())
+                dto.getDtoExistencias().add(gson.fromJson(provClient.getOneExistencia(a).getBody().toString(), DTOExistencia.class));
+
+            /*Deprecated
             for (DTOArticulos_Existencia a : dto.getArticulos_existencias())
                 a.setDtoExistencia(gson.fromJson(provClient.getOneExistencia(a.getId_existencia()).getBody().toString(), DTOExistencia.class));
+             */
 
             dto.setGeneratedValues(new DTOInsumo(service.save(dto.parseEntity())));
 
@@ -81,10 +104,18 @@ public class InsumoController extends BaseControllerImpl<DTOInsumo,Insumo, Insum
             DTOProveedor prov = gson.fromJson(provClient.getOneProveedor(dto.getIdDistribProv()).getBody().toString(), DTOProveedor.class);
             dto.setProveedor(prov);
 
-            // para XtoMany
-            for(DTOArticulos_Existencia a : dto.getArticulos_existencias()){
+            //para XtoMany
+            for(Long a : dto.getIdDistribExistencias())
+                dto.getDtoExistencias().add(gson.fromJson(provClient.getOneExistencia(a).getBody().toString(), DTOExistencia.class));
+
+            //
+            //for(Long a : dto.getIdDistribExistencias())
+            //                dto.getDtoExistencias().add(gson.fromJson(provClient.getOneClase2(a).getBody().toString(), DTOExistencia.class));
+
+            /* Deprecated
+            for(DTOArticulos_Existencia a : dto.getArticulos_existencias())
                 a.setDtoExistencia(gson.fromJson(provClient.getOneExistencia(a.getId_existencia()).getBody().toString(), DTOExistencia.class));
-            }
+            */
 
             dto.setGeneratedValues(new DTOInsumo(service.update(id, dto.parseEntity())));
 
@@ -108,16 +139,27 @@ public class InsumoController extends BaseControllerImpl<DTOInsumo,Insumo, Insum
             dto.getProveedor().setId(prov.getId());
 
             // para XtoMany
+            for(DTOExistencia a : dto.getDtoExistencias()){
+                DTOExistencia dtoExistencia = gson.fromJson(provClient
+                                .saveExistencia(a)
+                                .getBody()
+                                .toString()
+                        , DTOExistencia.class);
+                dto.getIdDistribExistencias().add(dtoExistencia.getId());
+                a.setId(dtoExistencia.getId());
+            }
+
+            /*Deprecated
             for (DTOArticulos_Existencia a : dto.getArticulos_existencias()) {
                 DTOExistencia dtoExistencia = gson.fromJson(provClient
                                 .saveExistencia(a.getDtoExistencia())
                                 .getBody()
                                 .toString()
                         , DTOExistencia.class);
-                System.out.println("paso");
                 a.setId_existencia(dtoExistencia.getId());
                 a.getDtoExistencia().setId(dtoExistencia.getId());
             }
+            */
 
             dto.setGeneratedValues(new DTOInsumo(service.save(dto.parseEntity())));
 
@@ -141,7 +183,20 @@ public class InsumoController extends BaseControllerImpl<DTOInsumo,Insumo, Insum
                 dto.setIdDistribProv(prov.getId());
             } else provClient.updateProveedor(dto.getIdDistribProv(), dto.getProveedor());
 
+            // para XtoMany
+            for(DTOExistencia a : dto.getDtoExistencias()){
+                if(a.getId() == 0) {
+                    DTOExistencia dtoExistencia = gson.fromJson(provClient
+                                    .saveExistencia(a)
+                                    .getBody()
+                                    .toString()
+                            , DTOExistencia.class);
+                    dto.getIdDistribExistencias().add(dtoExistencia.getId());
+                    a.setId(dtoExistencia.getId());
+                }else provClient.updateExistencia(a.getId(),a);
+            }
 
+            /*Deprecated
             for (DTOArticulos_Existencia a : dto.getArticulos_existencias()) {
                 if (a.getId_existencia() == 0) {
                     DTOExistencia DTOExistencia = gson.fromJson(provClient
@@ -153,6 +208,7 @@ public class InsumoController extends BaseControllerImpl<DTOInsumo,Insumo, Insum
                     a.getDtoExistencia().setId(DTOExistencia.getId());
                 }else provClient.updateExistencia(a.getId_existencia(),a.getDtoExistencia());
             }
+            */
 
             dto.setGeneratedValues(new DTOInsumo(service.update(id, dto.parseEntity())));
 
@@ -173,8 +229,13 @@ public class InsumoController extends BaseControllerImpl<DTOInsumo,Insumo, Insum
             provClient.deleteProveedor(dto.getIdDistribProv());
 
             // XtoMany
+            for(Long a : dto.getIdDistribExistencias())
+                provClient.deleteExistencia(a);
+
+            /* Deprecated
             for(DTOArticulos_Existencia a :(dto).getArticulos_existencias())
                 provClient.deleteExistencia(a.getId_existencia());
+            */
 
             return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
         }catch (Exception e){

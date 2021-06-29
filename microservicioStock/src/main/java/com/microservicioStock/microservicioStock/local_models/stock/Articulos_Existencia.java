@@ -20,7 +20,7 @@ import javax.persistence.Transient;
 @NoArgsConstructor
 @Audited
 @Builder
-public class Articulos_Existencia extends Base {
+/*DEPRECATED*/public class Articulos_Existencia extends Base {
 
     @Column(name="id_existencia")
     private Long id_existencia;

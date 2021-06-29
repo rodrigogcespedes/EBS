@@ -20,6 +20,7 @@ public abstract class BaseControllerImpl<D extends BaseDTO, E extends Base,S ext
         try{
             return ResponseEntity.status(HttpStatus.OK).body(service.findAll());
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error\"}");
         }
     }
@@ -29,6 +30,7 @@ public abstract class BaseControllerImpl<D extends BaseDTO, E extends Base,S ext
         try{
             return ResponseEntity.status(HttpStatus.OK).body(service.findAll(pageable));
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error\"}");
         }
     }
@@ -38,6 +40,7 @@ public abstract class BaseControllerImpl<D extends BaseDTO, E extends Base,S ext
         try{
             return ResponseEntity.status(HttpStatus.OK).body(service.findById(id));
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error\"}");
         }
     }
@@ -50,6 +53,7 @@ public abstract class BaseControllerImpl<D extends BaseDTO, E extends Base,S ext
 
             return ResponseEntity.status(HttpStatus.OK).body(service.save(entity));
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error\"}");
         }
 
@@ -58,11 +62,10 @@ public abstract class BaseControllerImpl<D extends BaseDTO, E extends Base,S ext
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id,@RequestBody D dto) {
         try{
-
             E entity = (E) dto.parseEntity();
-
             return ResponseEntity.status(HttpStatus.OK).body(service.update(id,entity));
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error\"}");
         }
     }
@@ -72,6 +75,7 @@ public abstract class BaseControllerImpl<D extends BaseDTO, E extends Base,S ext
         try{
             return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error\"}");
         }
     }

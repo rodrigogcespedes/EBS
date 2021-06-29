@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.microservicioStock.microservicioStock.local_models.stock.*;
+import com.microservicioStock.microservicioStock.remote_models.DTOExistencia;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,7 +30,15 @@ public abstract class DTOArticulo extends BaseDTO<Articulo> {
 
     protected List<DTOHistoricoPrecios> precio = new ArrayList<DTOHistoricoPrecios>();
 
+    /*Deprecated
     protected List<DTOArticulos_Existencia> articulos_existencias = new ArrayList<DTOArticulos_Existencia>();
+    */
+
+    // por cada XtoMany externo
+    private List<Long> idDistribExistencias = new ArrayList<Long>();
+    protected List<DTOExistencia> dtoExistencias = new ArrayList<>();
+
+
 
     public DTOArticulo(Articulo entity) {
 
@@ -52,10 +61,19 @@ public abstract class DTOArticulo extends BaseDTO<Articulo> {
         for (HistoricoPrecios i : entity.getPrecio())
             this.precio.add(new DTOHistoricoPrecios(i));
 
+        // por cada XtoMany externo
+        this.idDistribExistencias=entity.getIdDistribExistencias();
+
+
+        /*Deprecated
         for (Articulos_Existencia i : entity.getArticulos_existencias())
             this.articulos_existencias.add(new DTOArticulos_Existencia(i));
-
+        */
     }
+
+
+
+
 
     @Override
     public BaseDTO<Articulo> setGeneratedValues(BaseDTO<Articulo> dtoIn) {
@@ -63,8 +81,10 @@ public abstract class DTOArticulo extends BaseDTO<Articulo> {
         for(int i=0; i<this.precio.size(); i++)
             this.precio.get(i).setGeneratedValues(((DTOArticulo) dtoIn).getPrecio().get(i));
 
+        /*Deprecated
         for(int i=0; i<this.articulos_existencias.size(); i++)
             this.articulos_existencias.get(i).setGeneratedValues(((DTOArticulo) dtoIn).getArticulos_existencias().get(i));
+        */
 
         this.id = dtoIn.getId();
         return this;

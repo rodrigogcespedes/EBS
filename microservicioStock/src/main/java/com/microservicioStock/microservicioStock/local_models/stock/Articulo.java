@@ -34,6 +34,13 @@ public abstract class Articulo extends Base {
     protected int stockMin;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<com.microservicioStock.microservicioStock.local_models.stock.HistoricoPrecios> precio = new ArrayList<com.microservicioStock.microservicioStock.local_models.stock.HistoricoPrecios>();
+
+    // por cada XtoMany externo
+    @ElementCollection
+    private List<Long> idDistribExistencias = new ArrayList<Long>();
+
+    /*Deprecated
     @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
     private List<com.microservicioStock.microservicioStock.local_models.stock.Articulos_Existencia> articulos_existencias= new ArrayList<>();
+    */
 }

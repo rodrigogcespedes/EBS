@@ -2,6 +2,7 @@ package com.microservicioStock.microservicioStock.DTO;
 
 import com.microservicioStock.microservicioStock.local_models.stock.Articulo;
 import com.microservicioStock.microservicioStock.local_models.stock.Insumo;
+import com.microservicioStock.microservicioStock.remote_models.DTOExistencia;
 import com.microservicioStock.microservicioStock.remote_models.DTOProveedor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,10 +41,17 @@ public class DTOInsumo extends DTOArticulo{
         entity.setId(this.id);
 
         //Por cada relacion local XtoMany
-        for(DTOArticulos_Existencia dto: this.articulos_existencias)
-            entity.getArticulos_existencias().add(dto.parseEntity());
         for(DTOHistoricoPrecios dto: this.precio)
             entity.getPrecio().add(dto.parseEntity());
+
+        // por cada XtoMany externo
+        for(DTOExistencia dto : this.dtoExistencias)
+            entity.getIdDistribExistencias().add(dto.getId());
+
+        /*Deprecated
+        for(DTOArticulos_Existencia dto: this.articulos_existencias)
+            entity.getArticulos_existencias().add(dto.parseEntity());
+        */
 
         //Siempre
         return entity;

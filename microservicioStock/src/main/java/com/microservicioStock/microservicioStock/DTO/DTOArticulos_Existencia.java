@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DTOArticulos_Existencia extends BaseDTO<Articulos_Existencia>{
+/*DEPRECATED*/public class DTOArticulos_Existencia extends BaseDTO<Articulos_Existencia>{
 
     private Long id_existencia;
 
