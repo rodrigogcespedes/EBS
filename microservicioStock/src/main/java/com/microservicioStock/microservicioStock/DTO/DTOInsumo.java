@@ -45,8 +45,7 @@ public class DTOInsumo extends DTOArticulo{
             entity.getPrecio().add(dto.parseEntity());
 
         // por cada XtoMany externo
-        for(DTOExistencia dto : this.dtoExistencias)
-            entity.getIdDistribExistencias().add(dto.getId());
+        entity.setIdDistribExistencias(this.getIdDistribExistencias());
 
         /*Deprecated
         for(DTOArticulos_Existencia dto: this.articulos_existencias)

@@ -30,6 +30,8 @@ public class DTOManufacturado extends DTOArticulo {
     @Override
     public Manufacturado parseEntity() {
         Manufacturado entity = new Manufacturado();
+
+        //Por cada atributo
         entity.setApilable(this.apilable);
         entity.setComerciable(this.isComerciable);
         entity.setNombre(this.nombre);
@@ -39,14 +41,21 @@ public class DTOManufacturado extends DTOArticulo {
         entity.setDescripcion(this.descripcion);
         entity.setStockMin(this.stockMin);
 
+        //Por cada atributo distribuido
+        entity.setIdDistribExistencias(this.getIdDistribExistencias());
+
+        //Por cada clase local
         for (DTOReceta dto : this.recetas)
             entity.getRecetas().add(dto.parseEntity());
 
-        for (DTOArticulos_Existencia dto : this.articulos_existencias)
-            entity.getArticulos_existencias().add(dto.parseEntity());
-
         for (DTOHistoricoPrecios dto : this.precio)
             entity.getPrecio().add(dto.parseEntity());
+
+        /*Deprecated
+        for (DTOArticulos_Existencia dto : this.articulos_existencias)
+            entity.getArticulos_existencias().add(dto.parseEntity());
+*/
+
 
         return entity;
     }

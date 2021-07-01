@@ -1,7 +1,6 @@
 package com.microservicioStock.microservicioStock.controllers;
 
 import com.google.gson.Gson;
-import com.microservicioStock.microservicioStock.DTO.DTOArticulos_Existencia;
 import com.microservicioStock.microservicioStock.DTO.DTOInsumo;
 import com.microservicioStock.microservicioStock.clients.ProveedorClientRest;
 import com.microservicioStock.microservicioStock.local_models.stock.Insumo;
@@ -20,9 +19,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
